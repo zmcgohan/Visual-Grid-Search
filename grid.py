@@ -3,11 +3,22 @@ from math import sqrt
 
 VOID = 0
 TRAVELABLE = 1
-DEFAULT_LAND_CHANCE = 80
+DEFAULT_LAND_CHANCE = 75
 
 class Grid:
-	def __init__(self, width, height, land_chance=DEFAULT_LAND_CHANCE):
-		self.grid = [[1 if random() <= land_chance / 100.0 else 0 for col in xrange(width)] for row in xrange(height)]
+	def __init__(self, width, height, land_chance=DEFAULT_LAND_CHANCE, filename=None):
+		self.grid = []
+		if filename is None:
+			self.grid = [[1 if random() <= land_chance / 100.0 else 0 for col in xrange(width)] for row in xrange(height)]
+		else:
+			with open(filename) as f:
+				for line in f:
+					self.grid.append([])
+					for c in [c for c in line if c != '\n']:
+						if c == '0':
+							self.grid[len(self.grid)-1].append(VOID)
+						elif c == '.':
+							self.grid[len(self.grid)-1].append(TRAVELABLE)
 	def __str__(self):
 		return_str = ""
 		for row in self.grid:
@@ -38,4 +49,4 @@ class Grid:
 		print display_str
 	def get_distance(self, start_pos, end_pos):
 		"""Calculates the distance between two points."""
-		return sqrt((start_pos[1]-end_pos[1])*(start_pos[1]-end_pos[1]) + (start_pos[0]-end_pos[0])*(start_pos[1]-end_pos[1]))
+		return sqrt((start_pos[1]-end_pos[1])**2 + (start_pos[0]-end_pos[0])**2)

@@ -1,0 +1,3 @@
+:.:.: Visual Grid Search :.:.:
+
+This program visualizes different grid searching algorithms. (Right now only basic graph search and A* search.)
